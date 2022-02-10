@@ -3,16 +3,16 @@ const canvas = document.getElementById("canvas")
 const ctx = canvas.getContext('2d')
 ctx.canvas.width = 500
 ctx.canvas.height = 500
-const cDim = {
-    'x-center' : canvas.width/2,
-    'y-center' : canvas.height/2 
-}
 
 const updateCanvas = () => {
+    // clears canvas
     ctx.clearRect(0,0, canvas.width, canvas.height)
+
+    // draws and updates player position
     ctx.fillStyle = 'black'
     ctx.fillRect(player.x,player.y,10,10)
 }
+
 // set up a class for player object
 class Character {
     constructor(x=(canvas.width/2), y=(canvas.height/2)){
@@ -25,18 +25,21 @@ class Character {
         switch(dir){
             case ('up'):
                 this.y -= this.speed
+                if (this.y < 1) this.y = canvas.height - this.speed
                 break;
             case ('down'):
                 this.y += this.speed
+                if (this.y > canvas.height - 1) this.y = 0 
                 break;
             case ('left'):
                 this.x -= this.speed
+                if (this.x < 1) this.x = canvas.width - this.speed
                 break;
             case ('right'):
                 this.x += this.speed
+                if (this.x > canvas.width - 1) this.x = 0 
                 break;
         }
-        updateCanvas()
     }
 
     spawn(){
@@ -50,7 +53,7 @@ const player = new Character()
 window.onload = () => player.spawn()
 
 // Set up Player controls
-const playerControl = (key) => {
+const playerControl = (event) => {
     const controls = {
         'up' : 'ArrowUp',
         'upAlt': 'w',
@@ -63,7 +66,7 @@ const playerControl = (key) => {
 
     }
 
-    switch (key.key) {
+    switch (event.key) {
         case (controls.up):
         case (controls.upAlt):
             player.move('up')
@@ -87,3 +90,4 @@ const playerControl = (key) => {
 
 // event listeners & game logic
 document.addEventListener('keydown', playerControl)
+setInterval(updateCanvas, 100/30)
