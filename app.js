@@ -51,17 +51,33 @@ window.onload = () => player.spawn()
 
 // Set up Player controls
 const playerControl = (key) => {
-    switch (key.code) {
-        case ('ArrowUp' || 'KeyW'):
+    const controls = {
+        'up' : 'ArrowUp',
+        'upAlt': 'w',
+        'down' : 'ArrowDown',
+        'downAlt': 's',
+        'left': 'ArrowLeft',
+        'leftAlt': 'a',
+        'right': 'ArrowRight',
+        'rightAlt': 'd'
+
+    }
+
+    switch (key.key) {
+        case (controls.up):
+        case (controls.upAlt):
             player.move('up')
             break;
-        case ('ArrowDown' || 'KeyS'):
+        case (controls.down):
+        case (controls.downAlt):
             player.move('down')
             break;
-        case ('ArrowLeft' || 'KeyA'):
+        case (controls.left):
+        case (controls.leftAlt):
             player.move('left')
             break;
-        case ('ArrowRight' || 'KeyD'):
+        case (controls.right):
+        case (controls.rightAlt):
             player.move('right')
             break;
         default:
