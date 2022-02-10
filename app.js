@@ -10,7 +10,7 @@ const updateCanvas = () => {
 
     // draws and updates player position
     ctx.fillStyle = 'black'
-    ctx.fillRect(player.x,player.y,10,10)
+    ctx.fillRect(player.x,player.y,player.size,player.size)
 }
 
 // set up a class for player object
@@ -18,6 +18,7 @@ class Character {
     constructor(x=(canvas.width/2), y=(canvas.height/2)){
         this.x = x
         this.y = y
+        this.size = 30
         this.speed = 10
     }
     
@@ -25,19 +26,19 @@ class Character {
         switch(dir){
             case ('up'):
                 this.y -= this.speed
-                if (this.y < 1) this.y = canvas.height - this.speed
+                if (this.y < this.size) this.y = canvas.height - this.size
                 break;
             case ('down'):
                 this.y += this.speed
-                if (this.y > canvas.height - 1) this.y = 0 
+                if (this.y > canvas.height - this.size) this.y = 0 
                 break;
             case ('left'):
                 this.x -= this.speed
-                if (this.x < 1) this.x = canvas.width - this.speed
+                if (this.x < this.size) this.x = canvas.width - this.size
                 break;
             case ('right'):
                 this.x += this.speed
-                if (this.x > canvas.width - 1) this.x = 0 
+                if (this.x > canvas.width - this.size) this.x = 0 
                 break;
         }
     }
