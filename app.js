@@ -46,18 +46,16 @@ const genLevel = () => {
 
 const checkCollision = (mover) => {
     let collision = false
-    collidables.forEach( obj => {
-        if (mover.x+mover.size === obj.x+obj.size) {
-            collision = true 
-        }
-        else if (mover.y+mover.size === obj.y+obj.size) {
+    for (let i = 1; i < collidables.length; i++) {
+        const obj = collidables[i];
+        if (mover.x+mover.size === obj.x+obj.size && mover.y+mover.size === obj.y+obj.size) {
             collision = true 
         }
         else { 
             collision = false
         }
         if (collision === true) return
-    })
+    }
     return collision
 }
 
@@ -78,7 +76,9 @@ class Character {
             //  coord change adjusted by speed
             //  CHECK for edge of map
             case ('up'):
-                this.y -= this.speed
+                if (!checkCollision(this)){
+                    this.y -= this.speed
+                }
                 if (this.y < this.size) {
                     this.y = canvas.height - this.size
                     genLevel()
