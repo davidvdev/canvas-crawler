@@ -45,17 +45,35 @@ const genLevel = () => {
 }
 
 const checkCollision = (mover) => {
-    let collision = false
+    let collision = true
+    // establish shorthand for mover dimensions
+    const md = {
+        x : mover.x,
+        xM : mover.x + mover.size,
+        y : mover.y,
+        yM : mover.y + mover.size
+    }
     for (let i = 1; i < collidables.length; i++) {
         const obj = collidables[i];
-        if (mover.x+mover.size === obj.x+obj.size && mover.y+mover.size === obj.y+obj.size) {
-            collision = true 
+        // establish shorthand for object dimensions
+        const od = {
+            x : obj.x,
+            xM : obj.x + obj.size,
+            y : obj.y,
+            yM : obj.y + obj.size
         }
-        else { 
+        // check for collision on x-axis
+        if ((md.xM < od.x) || (md.x > od.xM)){
+            collision = false 
+        }
+        // then check for collision on y-axis
+        else if ((md.yM < od.y) || (md.y > od.yM)) {
             collision = false
         }
-        if (collision === true) return
+        // condition to break the loop early in case of a non-collision
+        if (collision === false) return
     }
+    console.log(collision)
     return collision
 }
 
