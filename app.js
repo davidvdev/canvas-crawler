@@ -51,7 +51,7 @@ const checkCollision = (mover) => {
         x : mover.x,
         xM : mover.x + mover.size,
         y : mover.y,
-        yM : mover.y + mover.size
+        yM : mover.y - mover.size
     }
     for (let i = 1; i < collidables.length; i++) {
         const obj = collidables[i];
@@ -60,20 +60,22 @@ const checkCollision = (mover) => {
             x : obj.x,
             xM : obj.x + obj.size,
             y : obj.y,
-            yM : obj.y + obj.size
+            yM : obj.y - obj.size
         }
         // check for collision on x-axis
-        if ((md.xM < od.x) || (md.x > od.xM)){
-            collision = false 
+        if (((md.xM < od.x) || (md.x > od.xM)) && ((md.yM < od.y) || (md.y > od.yM))){
+            collision = false
+            return collision
         }
         // then check for collision on y-axis
-        else if ((md.yM < od.y) || (md.y > od.yM)) {
-            collision = false
-        }
+        // if ((md.yM < od.y) || (md.y > od.yM)) {
+        //     collision = false
+        // }
         // condition to break the loop early in case of a non-collision
-        if (collision === false) return
+        // if (collision === false) return
     }
     console.log(collision)
+    collision = true
     return collision
 }
 
@@ -83,7 +85,7 @@ class Character {
         this.x = x
         this.y = y
         this.size = 30
-        this.speed = 10
+        this.speed = 1
         collidables.push(this)
     }
     
