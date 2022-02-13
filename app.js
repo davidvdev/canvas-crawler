@@ -45,7 +45,7 @@ const genLevel = () => {
 }
 
 const checkCollision = (mover) => {
-    let collision = true
+    let collision = false
     // establish shorthand for mover dimensions
     const md = {
         x : mover.x,
@@ -63,10 +63,20 @@ const checkCollision = (mover) => {
             yM : obj.y - obj.size
         }
         // check for collision on x-axis
-        if (((md.xM < od.x) || (md.x > od.xM)) && ((md.yM < od.y) || (md.y > od.yM))){
-            collision = false
+        if ((md.x >= od.x && od.xM >= md.x ) || (md.y <= od.y && od.yM <= md.y)){
+            collision = true
+            console.log('md: ', md)
+            console.log('od: ', od)
             return collision
         }
+
+        // when is a collision true (point by point)
+        /*  moving up
+            (md.x >= od.x && od.xM >= md.x ) ||  (md.y <= od.y && od.yM <= md.y)
+        */
+
+
+
         // then check for collision on y-axis
         // if ((md.yM < od.y) || (md.y > od.yM)) {
         //     collision = false
@@ -75,7 +85,6 @@ const checkCollision = (mover) => {
         // if (collision === false) return
     }
     console.log(collision)
-    collision = true
     return collision
 }
 
@@ -98,6 +107,8 @@ class Character {
             case ('up'):
                 if (!checkCollision(this)){
                     this.y -= this.speed
+                } else {
+                    console.log('bump')
                 }
                 if (this.y < this.size) {
                     this.y = canvas.height - this.size
