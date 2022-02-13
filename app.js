@@ -46,6 +46,10 @@ const genLevel = () => {
 
 const checkCollision = (mover) => {
     let collision = false
+    const hit = () => {
+        collision = true
+        return collision
+    }
     // establish shorthand for mover dimensions
     const md = {
         x : mover.x,
@@ -53,6 +57,9 @@ const checkCollision = (mover) => {
         y : mover.y,
         yM : mover.y - mover.size
     }
+    // establish which objects are in range of mover
+    // if the od.x + mover.size * 1.5 && od.y + mover.size * 1.5
+
     for (let i = 1; i < collidables.length; i++) {
         const obj = collidables[i];
         // establish shorthand for object dimensions
@@ -63,26 +70,25 @@ const checkCollision = (mover) => {
             yM : obj.y - obj.size
         }
         // check for collision on x-axis
-        if ((md.x >= od.x && od.xM >= md.x ) || (md.y <= od.y && od.yM <= md.y)){
-            collision = true
-            console.log('md: ', md)
-            console.log('od: ', od)
-            return collision
+        if ( md.x > od.x && md.x < od.xM ){
+            hit()
+        } else if ( md.xM > od.x && md.xM < od.xM ){
+            hit()
+        } else if ( md.y > od.yM && md.y < od.y ){
+            hit()
+        } else if ( md.yM > od.yM && md.yM < od.y ){
+            hit()
+        } else {
+            collision = false
         }
-
         // when is a collision true (point by point)
         /*  moving up
-            (md.x >= od.x && od.xM >= md.x ) ||  (md.y <= od.y && od.yM <= md.y)
+            // (md.x >= od.x && od.xM >= md.x ) ||  (md.y <= od.y && od.yM <= md.y)
+            ( md.x > od.x && md.x < od.xM )
+            ( md.xM > od.x && md.xM < od.xM )
+            ( md.y > od.yM && md.y < od.y )
+            ( md.yM > od.yM && md.yM < od.y )
         */
-
-
-
-        // then check for collision on y-axis
-        // if ((md.yM < od.y) || (md.y > od.yM)) {
-        //     collision = false
-        // }
-        // condition to break the loop early in case of a non-collision
-        // if (collision === false) return
     }
     console.log(collision)
     return collision
@@ -108,7 +114,7 @@ class Character {
                 if (!checkCollision(this)){
                     this.y -= this.speed
                 } else {
-                    console.log('bump')
+                    console.log('up bump')
                 }
                 if (this.y < this.size) {
                     this.y = canvas.height - this.size
@@ -116,21 +122,33 @@ class Character {
                 }
                 break;
             case ('down'):
-                this.y += this.speed
+                if (!checkCollision(this)){
+                    this.y += this.speed
+                } else {
+                    console.log('down bump')
+                }
                 if (this.y > canvas.height - this.size) {
                     this.y = 0 
                     genLevel()
                 }
                 break;
             case ('left'):
-                this.x -= this.speed
+                if (!checkCollision(this)){
+                    this.x -= this.speed
+                } else {
+                    console.log('left bump')
+                }
                 if (this.x < this.size) {
                     this.x = canvas.width - this.size
                     genLevel()
                 }
                 break;
             case ('right'):
-                this.x += this.speed
+                if (!checkCollision(this)){
+                    this.x += this.speed
+                } else {
+                    console.log('right bump')
+                }
                 if (this.x > canvas.width - this.size) {
                     this.x = 0
                     genLevel() 
