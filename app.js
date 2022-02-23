@@ -105,6 +105,7 @@ class Character {
     }
     
     move(dir){
+        console.log(dir)
         switch(dir){
             // case (direction):
             //  CHECK for collision
